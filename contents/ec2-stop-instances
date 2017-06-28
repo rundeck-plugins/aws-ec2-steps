@@ -1,0 +1,42 @@
+#!/usr/bin/env python
+# ec2-start-instances
+import argparse
+import os
+import subprocess
+import sys
+
+parser = argparse.ArgumentParser(description='Stops the EC2 instance.')
+parser.add_argument('instance-ids', help='One or more instance IDs.')
+args = parser.parse_args()
+
+COMMAND = ["aws", "ec2", "stop-instances", args.instance-ids]
+
+
+if os.getenv("RD_CONFIG_DRYRUN") == "true":
+    COMMAND.append("--dryrun")
+if os.getenv("RD_CONFIG_FORCE") == "true":
+    COMMAND.append("--force")
+if "RD_CONFIG_ADDITIONAL_INFO" in os.environ:
+    COMMAND.append("--additional-info")
+    COMMAND.append(os.getenv("RD_CONFIG_ADDITIONAL_INFO"))
+if "RD_CONFIG_CLI_INPUT_JSON" in os.environ:
+    COMMAND.append("--cli-input-json")
+    COMMAND.append(os.getenv("RD_CONFIG_CLI_INPUT_JSON"))
+if "RD_CONFIG_GENERATE_CLI_SKELETON" in os.environ:
+    COMMAND.append("--generate-cli-skeleton")
+    COMMAND.append(os.getenv("RD_CONFIG_GENERATE_CLI_SKELETON"))
+
+if "RD_CONFIG_ACCESS_KEY" in os.environ:
+    os.environ["AWS_ACCESS_KEY_ID"] = os.environ["RD_CONFIG_ACCESS_KEY"]
+if "RD_CONFIG_SECRET_ACCESS_KEY" in os.environ:
+    os.environ["AWS_SECRET_ACCESS_KEY"] = os.environ["RD_CONFIG_SECRET_ACCESS_KEY"]
+if "RD_CONFIG_DEFAULT_REGION" in os.environ:
+    os.environ["AWS_DEFAULT_REGION"] = os.environ["RD_CONFIG_DEFAULT_REGION"]
+
+try:
+    retcode = subprocess.call(COMMAND)
+    sys.exit(retcode)
+except OSError as e:
+    print >>sys.stderr, "Command error:", e
+    sys.exit(1)
+# Done
