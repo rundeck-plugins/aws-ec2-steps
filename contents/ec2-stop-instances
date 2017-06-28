@@ -6,14 +6,14 @@ import subprocess
 import sys
 
 parser = argparse.ArgumentParser(description='Stops the EC2 instance.')
-parser.add_argument('instance-ids', help='One or more instance IDs.')
+parser.add_argument('instance_ids', help='One or more instance IDs.')
 args = parser.parse_args()
 
-COMMAND = ["aws", "ec2", "stop-instances", args.instance-ids]
+COMMAND = ["aws", "ec2", "stop-instances", "--instance-ids", args.instance_ids]
 
 
 if os.getenv("RD_CONFIG_DRYRUN") == "true":
-    COMMAND.append("--dryrun")
+    COMMAND.append("--dry-run")
 if os.getenv("RD_CONFIG_FORCE") == "true":
     COMMAND.append("--force")
 if "RD_CONFIG_ADDITIONAL_INFO" in os.environ:

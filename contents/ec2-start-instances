@@ -6,14 +6,14 @@ import subprocess
 import sys
 
 parser = argparse.ArgumentParser(description='Copies a local file or ec2 object to another location locally or in ec2.')
-parser.add_argument('instance-ids', help='One or more instance IDs.')
+parser.add_argument('instance_ids', help='One or more instance IDs.')
 args = parser.parse_args()
 
-COMMAND = ["aws", "ec2", "start-instances", args.instance-ids]
+COMMAND = ["aws", "ec2", "start-instances", "--instance-ids", args.instance_ids]
 
 
 if os.getenv("RD_CONFIG_DRYRUN") == "true":
-    COMMAND.append("--dryrun")
+    COMMAND.append("--dry-run")
 
 if "RD_CONFIG_ADDITIONAL_INFO" in os.environ:
     COMMAND.append("--additional-info")
@@ -31,6 +31,7 @@ if "RD_CONFIG_SECRET_ACCESS_KEY" in os.environ:
 	os.environ["AWS_SECRET_ACCESS_KEY"] = os.environ["RD_CONFIG_SECRET_ACCESS_KEY"]
 if "RD_CONFIG_DEFAULT_REGION" in os.environ:
 	os.environ["AWS_DEFAULT_REGION"] = os.environ["RD_CONFIG_DEFAULT_REGION"]
+
 
 try:
     retcode = subprocess.call(COMMAND)
