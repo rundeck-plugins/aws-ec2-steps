@@ -1,0 +1,34 @@
+- description: ''
+  executionEnabled: true
+  loglevel: INFO
+  name: restart ec2 instances
+  nodeFilterEditable: false
+  nodefilters:
+    dispatch:
+      excludePrecedence: true
+      keepgoing: false
+      rankOrder: ascending
+      successOnEmptyNodeFilter: false
+      threadcount: 1
+    filter: 'tags: ec2'
+  nodesSelectedByDefault: true
+  scheduleEnabled: true
+  sequence:
+    commands:
+    - configuration:
+        dryrun: 'false'
+        instance-ids: ${node.instanceId}
+      nodeStep: true
+      type: aws-cli-ec2-describe-instance-status-step
+    - configuration:
+        dryrun: 'false'
+        instance-ids: ${node.instanceId}
+      nodeStep: true
+      type: aws-cli-ec2-stop-instances-step
+    - configuration:
+        dryrun: 'false'
+        instance-ids: ${node.instanceId}
+      nodeStep: true
+      type: aws-cli-ec2-start-instances-step
+    keepgoing: false
+    strategy: node-first
