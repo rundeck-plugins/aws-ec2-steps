@@ -4,6 +4,13 @@ import argparse
 import os
 import subprocess
 import sys
+import logging
+
+formatter = logging.Formatter()
+logging.basicConfig(stream=sys.stderr, level=logging.INFO,
+                    format='%(levelname)s: %(message)s')
+log = logging.getLogger('ec2-start-instances')
+
 
 parser = argparse.ArgumentParser(description='Copies a local file or ec2 object to another location locally or in ec2.')
 parser.add_argument('instance_ids', help='One or more instance IDs.')
@@ -32,6 +39,7 @@ if "RD_CONFIG_SECRET_ACCESS_KEY" in os.environ:
 if "RD_CONFIG_DEFAULT_REGION" in os.environ:
 	os.environ["AWS_DEFAULT_REGION"] = os.environ["RD_CONFIG_DEFAULT_REGION"]
 
+log.info("Executing: '%s' ..." % ' '.join(COMMAND))
 
 try:
     retcode = subprocess.call(COMMAND)
