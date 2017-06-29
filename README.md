@@ -2,6 +2,7 @@ Simple wrapper around [aws ec2 CLI](http://docs.aws.amazon.com/cli/latest/refere
 
 The following steps are available:
 
+* describe-instance-status (http://docs.aws.amazon.com/cli/latest/reference/ec2/describe-instance-status.html)
 * start-instances (http://docs.aws.amazon.com/cli/latest/reference/ec2/start-instances.html)
 * stop-instances (http://docs.aws.amazon.com/cli/latest/reference/ec2/stop-instances.html)
 

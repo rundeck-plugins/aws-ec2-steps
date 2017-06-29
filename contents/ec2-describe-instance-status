@@ -12,7 +12,7 @@ logging.basicConfig(stream=sys.stderr, level=logging.INFO,
 log = logging.getLogger('ec2-instance-status')
 
 
-parser = argparse.ArgumentParser(description='Copies a local file or ec2 object to another location locally or in ec2.')
+parser = argparse.ArgumentParser(description='Describes the status of one or more instances.')
 parser.add_argument('instance_ids', help='One or more instance IDs.')
 args = parser.parse_args()
 
